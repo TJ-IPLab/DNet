@@ -8,6 +8,11 @@ This is the reference PyTorch implementation for training and testing depth esti
 >
 > [IROS 2020 accepted](https://arxiv.org/abs/2004.05560)
 
+<p align="center">
+  <img src="assets/demo.gif" alt="example input output gif" width="800" />
+</p>
+
+
 If you find our work useful in your research please consider citing our paper:
 
 ```
