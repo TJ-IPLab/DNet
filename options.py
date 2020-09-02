@@ -215,6 +215,11 @@ class MonodepthOptions:
             choices=["gt", "dgc", "disable"],
             help="which scaling method to run eval on")
         self.parser.add_argument(
+            "--cam_height",
+            type=float,
+            help="camera height through calibration",
+            default=1.65)
+        self.parser.add_argument(
             "--ext_disp_to_eval",
             type=str,
             help="optional path to a .npy disparities file to evaluate")

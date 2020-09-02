@@ -227,9 +227,16 @@ def evaluate(opt):
             if opt.eval_object:
                 mask = np.logical_and(mask, object_mask)
         elif opt.scaling == "dgc":
-            scale_recovery = ScaleRecovery(1, gt_height, gt_width, K).cuda()
+            tensor_K = K.copy()
+            tensor_K[0, :] *= gt_width
+            tensor_K[1, :] *= gt_height
+            tensor_K = torch.from_numpy(tensor_K).unsqueeze(0).cuda()
+
+            cam_height = torch.tensor([opt.cam_height]).cuda()
+
+            scale_recovery = ScaleRecovery(1, gt_height, gt_width).cuda()
             pred_depth = torch.from_numpy(pred_depth).unsqueeze(0).cuda()
-            ratio = scale_recovery(pred_depth).cpu().item()
+            ratio = scale_recovery(pred_depth, tensor_K, cam_height).cpu().item()
             pred_depth = pred_depth[0].cpu().numpy()
         else:
             ratio = 1

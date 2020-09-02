@@ -256,20 +256,12 @@ class SSIM(nn.Module):
 class ScaleRecovery(nn.Module):
     """Layer to estimate scale through dense geometrical constrain
     """
-    def __init__(self, batch_size, height, width, K):
+    def __init__(self, batch_size, height, width):
         super(ScaleRecovery, self).__init__()
         self.backproject_depth = BackprojectDepth(batch_size, height, width)
         self.batch_size = batch_size
         self.height = height
         self.width = width
-
-        K = K.copy()
-        K[0, :] *= width
-        K[1, :] *= height
-
-        inv_K = np.linalg.pinv(K)
-        inv_K = torch.from_numpy(inv_K).unsqueeze(0).cuda()
-        self.inv_K = inv_K
 
     # derived from https://github.com/zhenheny/LEGO
     def get_surface_normal(self, cam_points, nei=1):
@@ -314,22 +306,25 @@ class ScaleRecovery(nn.Module):
         vertical = torch.cat((zeros, ones, zeros), dim=1)
 
         cosine_sim = cos(normal_map, vertical).unsqueeze(1)
-        vertical_mask = torch.where(cosine_sim.abs() > threshold, ones, zeros)
+        vertical_mask = (cosine_sim > threshold) | (cosine_sim < -threshold)
 
         y = cam_points[:,1,:,:].unsqueeze(1)
-        ground_mask = vertical_mask.masked_fill(y <= 0, 0)
+        ground_mask = vertical_mask.masked_fill(y <= 0, False)
 
         return ground_mask
 
-    def forward(self, depth):
-        cam_points = self.backproject_depth(depth, self.inv_K)
+    def forward(self, depth, K, real_cam_height):
+        inv_K = torch.inverse(K)
+
+        cam_points = self.backproject_depth(depth, inv_K)
         surface_normal = self.get_surface_normal(cam_points)
         ground_mask = self.get_ground_mask(cam_points, surface_normal)
 
-        cam_height = (cam_points[:,:-1,:,:] * surface_normal).sum(1).abs().unsqueeze(1)
-        cam_height_masked = torch.masked_select(cam_height, ground_mask.bool())
+        cam_heights = (cam_points[:,:-1,:,:] * surface_normal).sum(1).abs().unsqueeze(1)
+        cam_heights_masked = torch.masked_select(cam_heights, ground_mask)
+        cam_height = torch.median(cam_heights_masked).unsqueeze(0)
 
-        scale = 1.65 / torch.median(cam_height_masked)
+        scale = torch.reciprocal(cam_height).mul_(real_cam_height)
 
         return scale
 
