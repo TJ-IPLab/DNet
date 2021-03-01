@@ -6,7 +6,7 @@ This is the reference PyTorch implementation for training and testing depth esti
 >
 > Feng Xue, Guirong Zhuo<sup>\*</sup>, Ziyuan Huang, Wufei Fu, Zhuoyue Wu and Marcelo H. Ang Jr
 >
-> [IROS 2020 accepted](https://arxiv.org/abs/2004.05560)
+> [IROS 2020](https://ieeexplore.ieee.org/document/9340802)
 
 <p align="center">
   <img src="assets/demo.gif" alt="example input output gif" width="800" />
