@@ -28,7 +28,7 @@ If you find our work useful in your research please consider citing our paper:
 }
 ```
 
-This repository is maintained by [Feng Xue](https://github.com/josephxue) and [Ziyuan Huang](https://github.com/huang-ziyuan)
+This repository is maintained by [Feng Xue](https://github.com/josephxue) and [Wufei Fu](https://github.com/fwf-lernen)
 
 
 ## License
