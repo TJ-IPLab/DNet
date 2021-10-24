@@ -16,15 +16,13 @@ This is the reference PyTorch implementation for training and testing depth esti
 If you find our work useful in your research please consider citing our paper:
 
 ```
-@INPROCEEDINGS{xue2020toward,
-  author={F. {Xue} and G. {Zhuo} and Z. {Huang} and W. {Fu} and Z. {Wu} and M. H. {Ang}},
-  booktitle={2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)}, 
-  title={Toward Hierarchical Self-Supervised Monocular Absolute Depth Estimation for Autonomous Driving Applications}, 
+@inproceedings{xue2020toward,
+  title={Toward hierarchical self-supervised monocular absolute depth estimation for autonomous driving applications},
+  author={Xue, Feng and Zhuo, Guirong and Huang, Ziyuan and Fu, Wufei and Wu, Zhuoyue and Ang, Marcelo H},
+  booktitle={2020 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  pages={2330--2337},
   year={2020},
-  volume={},
-  number={},
-  pages={2330-2337},
-  doi={10.1109/IROS45743.2020.9340802}}
+  organization={IEEE}
 }
 ```
 
