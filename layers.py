@@ -34,8 +34,7 @@ def transformation_from_parameters(axisangle, translation, invert=False):
 
     if invert:
         R = R.transpose(1, 2)
-        t = -torch.matmul(R[:,0:3,0:3],t.transpose(1, 2))
-        t = t.transpose(1, 2)
+        t *= -1
 
     T = get_translation_matrix(t)
 
